@@ -94,7 +94,7 @@ const loginUser = async (req, res = express.response) => {
     }
 }
 
-const validateToken = async(req, res = express.response) => {
+const validateToken = async (req, res = express.response) => {
     const { uid, name } = req;
 
     // generar nuevo jwt y enviarlo en esta nueva peticion
@@ -108,23 +108,31 @@ const validateToken = async(req, res = express.response) => {
     });
 }
 
-const getUserById = async(req, res = express.response) => {
+const getUserById = async (req, res = express.response) => {
 
-    const userId = req.params.id;
-    const user = User.findById(userId);
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId);
 
-    if(!user) {
-        return res.status(404).json({
+        if (!user) {
+            return res.status(404).json({
+                status: false,
+                msg: "Usuario no encontrado"
+            });
+        }
+
+        return res.status(200).json({
+            status: true,
+            user,
+            msg: "Usuario encontrado"
+        });
+    } catch (error) {
+        return res.status(500).json({
             status: false,
-            msg: 'El usuario no existe'
+            msg: "Error en el servidor",
+            error
         });
     }
-
-    res.status(200).json({
-        status: true,
-        user,
-        msg: "Usuario encontrado"
-    });
 
 }
 

@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const { dbConnection } = require('./database/config');
 require('dotenv').config();
@@ -16,7 +17,7 @@ app.use(express.json());
 
 //Rutas
 app.use('/api/auth', require('./routes/auth'));
-//app.use('/api/products', require('./routes/products'));
+app.use('/api/products', require('./routes/products'));
 //app.use('/api/detail_payment', require('./routes/details_payment'));
 //app.use('/api/user', require('./routes/user'));
 
